@@ -146,20 +146,19 @@
 
 <script>
 
-    /**
-     * Login
-     */
     function login() {
         // TODO: complete the login function
+        var username = $('#username').val();
+        if (username !=null && username != ""){
+            location.href = '/index?username='+$('#username').val();
+        }
     }
 
-    /**
-     * Enter to login.
-     */
     document.onkeydown = function (event) {
         var e = event || window.event || arguments.callee.caller.arguments[0];
         e.keyCode === 13 && login();
     };
+
 
 
 </script>

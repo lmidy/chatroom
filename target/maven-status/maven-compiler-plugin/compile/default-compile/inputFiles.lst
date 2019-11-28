@@ -1,4 +1,4 @@
-/Users/stephenchen/Downloads/ND035-P01-Project/chatroom-starter/src/main/java/edu/udacity/java/nano/chat/Message.java
-/Users/stephenchen/Downloads/ND035-P01-Project/chatroom-starter/src/main/java/edu/udacity/java/nano/WebSocketChatApplication.java
-/Users/stephenchen/Downloads/ND035-P01-Project/chatroom-starter/src/main/java/edu/udacity/java/nano/chat/WebSocketConfig.java
-/Users/stephenchen/Downloads/ND035-P01-Project/chatroom-starter/src/main/java/edu/udacity/java/nano/chat/WebSocketChatServer.java
+/Users/lynettemidy/Documents/Projects/chatroomFinal/src/main/java/edu/udacity/java/nano/model/Message.java
+/Users/lynettemidy/Documents/Projects/chatroomFinal/src/main/java/edu/udacity/java/nano/WebSocketChatApplication.java
+/Users/lynettemidy/Documents/Projects/chatroomFinal/src/main/java/edu/udacity/java/nano/controller/WebSocketChatServer.java
+/Users/lynettemidy/Documents/Projects/chatroomFinal/src/main/java/edu/udacity/java/nano/config/WebSocketConfig.java

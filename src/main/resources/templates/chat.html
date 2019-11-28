@@ -20,51 +20,53 @@
 </div>
 
 <div style="margin-left:20px;margin-right:20px">
-    <div class="container_text">
-        <div class="mdui-row">
-            <div class="mdui-col-xs-12 mdui-col-sm-6">
-                <div class="mdui-col-xs-12 mdui-col-sm-10">
-                    <div class="mdui-textfield-floating-label" style="margin-top:15px">
-                        <i class="mdui-icon">Welcome：</i>
-                        <i class="mdui-icon" id="username" th:text="${username}"></i>
-                    </div>
-                </div>
-                <div class="mdui-col-xs-12 mdui-col-sm-10">
-                    <div class="mdui-textfield mdui-textfield-floating-label">
-                        <i class="mdui-icon material-icons">textsms</i>
-                        <label class="mdui-textfield-label">Send Text</label>
-                        <input class="mdui-textfield-input" id="msg"/>
-                    </div>
-                    <div class="mdui-container" style="padding:20px 35px">
-                        <!-- TODO: add a send button to send message -->
-                        <button class="mdui-btn mdui-color-theme mdui-ripple"
-                                onclick="clearMsg()">Clear
-                        </button>
-                    </div>
-                </div>
+    <div class="mdui-row mdui--text-center" style="margin-left:20px;margin-right:20px">
+        <div class="mdui-col-xs-12 mdui-col-sm-12">
+            <div class="mdui-textfield-floating-label" style="margin-top:15px">
+                <i class="mdui-icon">Welcome：</i>
+                <i class="mdui-icon" id="username" th:text="${username}"></i>
             </div>
-
-            <div class="mdui-col-xs-6 mdui-col-sm-5" style="padding:10px 0">
-                <div class="mdui-chip">
-                    <span class="mdui-chip-icon mdui-color-blue">
-                        <i class="mdui-icon material-icons">&#xe420;</i></span>
-                    <span class="mdui-chip-title">Content</span>
-                </div>
-
-                <div class="mdui-chip">
-                    <span class="mdui-chip-icon mdui-color-blue">
-                        <i class="mdui-icon material-icons">face</i></span>
-                    <span class="mdui-chip-title">Online Users</span>
-                    <!-- TODO: check online number num -->
-                </div>
-                <!-- TODO: add a message container -->
-            </div>
-
         </div>
     </div>
-</div>
+    <div class="mdui-row">
+        <div class="mdui-col-xs-12 mdui-col-sm-6">
+            <div class="mdui-col-xs-12 mdui-col-sm-10">
+            </div>
+            <div class="mdui-col-xs-12 mdui-col-sm-10">
+                <div class="mdui-textfield mdui-textfield-floating-label">
+                    <i class="mdui-icon material-icons">textsms</i>
+                    <label class="mdui-textfield-label">Send Text</label>
+                    <input class="mdui-textfield-input" id="msg" />
+                </div>
+                <div class="mdui-container" style="padding:20px 35px">
+                    <button class="mdui-btn mdui-color-theme mdui-ripple"
+                            onclick="sendMsgToServer()">Send
+                    </button>
+                    <button class="mdui-btn mdui-color-theme mdui-ripple"
+                            onclick="clearMsg()">Clear
+                    </button>
+                </div>
+            </div>
+        </div>
 
-<script th:inline="javascript">
+        <div class="mdui-chip">
+                    <span class="mdui-chip-icon mdui-color-blue">
+                        <i class="mdui-icon material-icons">&#xe420;</i></span>
+            <span class="mdui-chip-title">Content</span>
+        </div>
+
+        <div class="mdui-chip">
+                    <span class="mdui-chip-icon mdui-color-blue">
+                        <i class="mdui-icon material-icons">face</i></span>
+            <span>Online Users</span>
+            <span class="chat-num" />
+        </div>
+        <div class="message-container">
+        </div>
+
+    </div>
+
+    <script th:inline="javascript">
 
     /**
      * WebSocket Client
@@ -72,31 +74,41 @@
      * 1、WebSocket client receive messages with callback. example：webSocket.onmessage
      * 2、WebSocket client send message to server. example：webSocket.send();
      */
+
     function getWebSocket() {
-        /**
-         * WebSocket client PS：URL shows WebSocket protocal, port number, and then end point.
-         */
-        var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');
-        /**
-         * websocket open connection.
-         */
+
+    <!--        var webSocket = new WebSocket(/*[[${webSocketUrl}]]*/ 'ws://localhost:8080/chat');-->
+        var username =/*[[${username}]]*/;
+        console.log(username);
+        var webSocket = new WebSocket('ws://localhost:8080/chat/'+username);
+
         webSocket.onopen = function (event) {
             console.log('WebSocket open connection');
         };
 
-        /**
-         * Server send 1) broadcast message, 2) online users.
-         */
+
         webSocket.onmessage = function (event) {
-            console.log('WebSocket Receives：%c' + event.data, 'color:green');
-            //Receive Message from Server
+            console.log('WebSocket Receives：%c' + event.data, 'color:blue');
             var message = JSON.parse(event.data) || {};
             var $messageContainer = $('.message-container');
-            if (message.type === 'SPEAK') {
+            if (message.type === 'CHAT') {
                 $messageContainer.append(
-                    '<div class="mdui-card" style="margin: 10px 0;">' +
+                    '<div class="mdui-card" style="margin: 2px 0;">' +
                     '<div class="mdui-card-primary">' +
-                    '<div class="mdui-card-content message-content">' + message.username + "：" + message.msg + '</div>' +
+                    '<div class="mdui-card-content message-content">' + message.username + " wrote：" + message.content + '</div>' +
+                    '</div></div>');
+            }else if (message.type == 'ENTER')
+            {
+                $messageContainer.append(
+                    '<div class="mdui-card" style="margin: 2px 0;">' +
+                    '<div class="mdui-card-primary">' +
+                    '<div class="mdui-card-content message-content">' + message.username + " joined the chat." +'</div>' +
+                    '</div></div>');
+            }else if (message.type== 'LEAVE') {
+                $messageContainer.append(
+                    '<div class="mdui-card" style="margin: 2px 0;">' +
+                    '<div class="mdui-card-primary">' +
+                    '<div class="mdui-card-content message-content">' + message.username + "has left this chat." +'</div>' +
                     '</div></div>');
             }
             $('.chat-num').text(message.onlineCount);
@@ -108,16 +120,12 @@
             }
         };
 
-        /**
-         * Close connection
-         */
+       //Close connection
         webSocket.onclose = function (event) {
             console.log('WebSocket close connection.');
         };
 
-        /**
-         * Exception
-         */
+       //Exception
         webSocket.onerror = function (event) {
             console.log('WebSocket exception.');
         };
@@ -127,35 +135,29 @@
     var webSocket = getWebSocket();
 
 
-    /**
-     * Send messages to server use webSocket.
-     */
     function sendMsgToServer() {
         var $message = $('#msg');
         if ($message.val()) {
-            webSocket.send(JSON.stringify({username: $('#username').text(), msg: $message.val()}));
+            webSocket.send(JSON.stringify({username: $('#username').text(), content: $message.val()}));
             $message.val(null);
         }
+        console.log( "Message sent to server via websocket");
     }
 
-    /**
-     * Clear screen
-     */
+    //clear screen
     function clearMsg() {
         $(".message-container").empty();
     }
 
-    /**
-     * Enter to send message.
-     */
+    //enter to send message
     document.onkeydown = function (event) {
         var e = event || window.event || arguments.callee.caller.arguments[0];
         e.keyCode === 13 && sendMsgToServer();
     };
 
-</script>
+        </script>
 
-</body>
+    </body>
 </html>
 
 
