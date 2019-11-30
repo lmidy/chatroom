@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 
-public class ChatTestPage extends GeneralHtml {
+public class Chat extends GeneralHtml {
 
     @FindBy(id = "username")
     private WebElement username;
@@ -19,7 +19,7 @@ public class ChatTestPage extends GeneralHtml {
 
     private String messageText;
 
-    public ChatTestPage(WebDriver webDriver) {
+    public Chat(WebDriver webDriver) {
         super(webDriver);
     }
 
@@ -33,9 +33,9 @@ public class ChatTestPage extends GeneralHtml {
         return super.webDriver.findElement(By.className("message-content"));
     }
 
-    public static ChatTestPage to(WebDriver driver) {
+    public static Chat to(WebDriver driver) {
         driver.get("http://localhost:8080/chat/Ian");
-        return PageFactory.initElements(driver, ChatTestPage.class);
+        return PageFactory.initElements(driver, Chat.class);
     }
 
     public WebElement getMsg() {

@@ -1,7 +1,7 @@
 package edu.udacity.java.nano.server;
 
-import edu.udacity.java.nano.client.ChatTestPage;
-import edu.udacity.java.nano.client.LoginUserTest;
+import edu.udacity.java.nano.client.Chat;
+import edu.udacity.java.nano.client.Login;
 import org.checkerframework.checker.nullness.compatqual.NullableDecl;
 import org.junit.After;
 import org.junit.Before;
@@ -38,9 +38,9 @@ public class ChatWebSocketServerTest {
     }
 
     @Test
-    public void loginAndJoin() throws Exception{
-        LoginUserTest page = LoginUserTest.to(webDriver);
-        ChatTestPage chat = page.loginAndJoin("Ian");
+    public void userJoin() throws Exception{
+        Login page = Login.to(webDriver);
+        Chat chat = page.userJoin("Ian");
 
         (new WebDriverWait(chat.webDriver, 10)).until(new ExpectedCondition<Boolean>() {
             @NullableDecl
@@ -54,8 +54,8 @@ public class ChatWebSocketServerTest {
 
     @Test
     public void chat() throws Exception {
-        LoginUserTest page = LoginUserTest.to(webDriver);
-        ChatTestPage chat = page.loginAndJoin("Ian");
+        Login page = Login.to(webDriver);
+        Chat chat = page.userJoin("Ian");
         chat.sendChatMessage("Hey peeps");
 
         (new WebDriverWait(webDriver, 10)).until(new ExpectedCondition<Boolean>() {
@@ -71,8 +71,8 @@ public class ChatWebSocketServerTest {
     @Test
     public void logout() throws Exception {
 
-        LoginUserTest page = LoginUserTest.to(webDriver);
-        ChatTestPage chat = page.loginAndJoin("Ian");
+        Login page = Login.to(webDriver);
+        Chat chat = page.userJoin("Ian");
         chat.sendChatMessage("Hey peeps");
 
 
@@ -84,7 +84,7 @@ public class ChatWebSocketServerTest {
             @NullableDecl
             @Override
             public Boolean apply(@NullableDecl WebDriver input) {
-                System.out.println("logout triggered. current URL: " + webDriver.getCurrentUrl());
+                System.out.println("Logout clicked. current URL: " + webDriver.getCurrentUrl());
                 return webDriver.getCurrentUrl().equals("http://localhost:8080/");
             }
         });

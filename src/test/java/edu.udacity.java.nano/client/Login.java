@@ -5,7 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class LoginUserTest extends GeneralHtml {
+public class Login extends GeneralHtml {
 
     @FindBy(id = "username")
     private WebElement username;
@@ -15,20 +15,20 @@ public class LoginUserTest extends GeneralHtml {
 
     private String usernameText;
 
-    public LoginUserTest(WebDriver driver) {
+    public Login(WebDriver driver) {
         super(driver);
     }
 
-    public ChatTestPage loginAndJoin(String username) {
+    public Chat userJoin(String username) {
         this.usernameText = username;
         this.username.sendKeys(username);
         this.submit.click();
-        return PageFactory.initElements(super.webDriver, ChatTestPage.class);
+        return PageFactory.initElements(super.webDriver, Chat.class);
     }
 
-    public static LoginUserTest to(WebDriver driver) {
+    public static Login to(WebDriver driver) {
         driver.get("http://localhost:8080/");
-        return PageFactory.initElements(driver, LoginUserTest.class);
+        return PageFactory.initElements(driver, Login.class);
     }
 
     public WebElement getUsername() {

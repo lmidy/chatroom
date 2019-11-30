@@ -13,7 +13,7 @@
     <div class="mdui-toolbar mdui-color-theme">
         <span class="mdui-typo-title">Chat Room</span>
         <div class="mdui-toolbar-spacer"></div>
-        <a class="mdui-btn mdui-btn-icon" th:href="@{/}">
+        <a class="mdui-btn mdui-btn-icon" id="logout" th:href="@{/}">
             <i class="mdui-icon material-icons">exit_to_app</i>
         </a>
     </div>
@@ -39,7 +39,7 @@
                     <input class="mdui-textfield-input" id="msg" />
                 </div>
                 <div class="mdui-container" style="padding:20px 35px">
-                    <button class="mdui-btn mdui-color-theme mdui-ripple"
+                    <button id="sendBtn" class="mdui-btn mdui-color-theme mdui-ripple"
                             onclick="sendMsgToServer()">Send
                     </button>
                     <button class="mdui-btn mdui-color-theme mdui-ripple"
@@ -108,7 +108,7 @@
                 $messageContainer.append(
                     '<div class="mdui-card" style="margin: 2px 0;">' +
                     '<div class="mdui-card-primary">' +
-                    '<div class="mdui-card-content message-content">' + message.username + "has left this chat." +'</div>' +
+                    '<div class="mdui-card-content message-content">' +message.username + "has left this chat." +'</div>' +
                     '</div></div>');
             }
             $('.chat-num').text(message.onlineCount);
