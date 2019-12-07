@@ -13,7 +13,7 @@ public class LoginController {
     @PostMapping("/login")
     public String login(@RequestParam String username, Model model){
         model.addAttribute("username", username);
-        model.addAttribute("webSocketUrl", "ws://localhost:8080/chat/" + username);
+        model.addAttribute("webSocketUrl", "ws://localhost:8080/chat/" +username);
         return "/chat";
     }
 
