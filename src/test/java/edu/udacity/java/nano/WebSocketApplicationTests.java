@@ -27,16 +27,17 @@ public class WebSocketApplicationTests {
 
     @Before
     public void initialization() {
-        System.setProperty("webdriver.chrome.driver",
-                "/chatroom-starter/chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "/Applications/chromedriver");
         webDriver  = new ChromeDriver();
         webDriver.get(BASE_URL);
+        System.out.println("Location for driver found, ready to start");
     }
 
     @Test
     public void testLogin() {
         webDriver.get(BASE_URL);
         Assert.assertEquals(webDriver.getTitle(), "Chat Room Login");
+        System.out.println("Test Login Passed");
     }
 
     @Test
@@ -48,6 +49,7 @@ public class WebSocketApplicationTests {
         loginButton.click();
         String currentUrl = webDriver.getCurrentUrl();
         Assert.assertEquals(currentUrl, CHAT_URL);
+        System.out.println("Username called testing joined");
     }
 
     @Test
@@ -66,7 +68,8 @@ public class WebSocketApplicationTests {
 
         List<WebElement> messageElements = webDriver.findElements((By.className("message-content")));
         WebElement messageElement = messageElements.get(messageElements.size() -1);
-        Assert.assertEquals(USERNAME + ":" +message, messageElement.getText());
+        Assert.assertEquals(USERNAME + " wrote:" +message, messageElement.getText());
+        System.out.println("Chat sent");
     }
 
     @Test
@@ -74,6 +77,7 @@ public class WebSocketApplicationTests {
         webDriver.get(CHAT_URL);
         webDriver.findElement(By.id("logout")).click();
         Assert.assertEquals(BASE_URL, webDriver.getCurrentUrl());
+        System.out.println("Username logged out");
     }
 
     @AfterClass
